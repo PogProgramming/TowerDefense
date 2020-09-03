@@ -21,7 +21,6 @@ public class TroopMovement : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, nodes[index], 2.5f * Time.deltaTime);
         if (transform.position == nodes[index]) 
         {
-            Debug.Log("REACHED what");
             index++;
         }
 
