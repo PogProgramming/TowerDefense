@@ -1,45 +1,71 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float turnSpeed = 4.0f;
-    public float moveSpeed = 2.0f;
+    public GameObject playerCam;
+    private MoveCamera mc;
 
-    public float minTurnAngle = -90.0f;
-    public float maxTurnAngle = 90.0f;
-    private float rotX;
+    private Rigidbody playerRb;
+    private CapsuleCollider playerCol;
+
+    public LayerMask groundLayer;
+
+    public float movementSpeed = 10F;
+    public float jumpForce;
+
+    public float maxVelocityChange = 10f;
+    public float gravity = 10f;
+
+    public bool ClearAbove;
+    public bool Standing;
 
     void Start()
     {
+        groundLayer = LayerMask.GetMask("Ground");
+        playerCol = transform.GetComponent<CapsuleCollider>();
 
+        playerRb = transform.GetComponent<Rigidbody>();
+        playerRb.freezeRotation = true;
+        playerRb.useGravity = false;
+
+        mc = playerCam.GetComponent<MoveCamera>();
     }
 
-    // Update is called once per frame
+    void FixedUpdate()
+    {
+        Vector3 targetVelocity = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        targetVelocity = transform.TransformDirection(targetVelocity);
+        targetVelocity *= movementSpeed;
+
+        Vector3 velocity = playerRb.velocity;
+        Vector3 velocityChange = targetVelocity - velocity;
+        velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
+        velocityChange.y = 0;
+        velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
+
+        playerRb.AddForce(velocityChange, ForceMode.VelocityChange);
+
+        playerRb.AddForce(new Vector3(0, -gravity * playerRb.mass, 0));
+    }
+
     void Update()
     {
-        MouseAiming();
-        KeyboardMovement();
+        if (Input.GetKeyDown(KeyCode.Space)) Jump();
+    }
+    private void Jump()
+    {
+        if (IsGrounded())
+        {
+            playerRb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+
+        }
     }
 
-    void MouseAiming()
+    private bool IsGrounded()
     {
-        float y = Input.GetAxis("Mouse X") * turnSpeed;
-        rotX += Input.GetAxis("Mouse Y") * turnSpeed;
-
-        rotX = Mathf.Clamp(rotX, minTurnAngle, maxTurnAngle);
-
-        transform.eulerAngles = new Vector3(-rotX, transform.eulerAngles.y + y, 0);
-    }
-
-    void KeyboardMovement()
-    {
-        Vector3 dir = new Vector3(0, 0, 0);
-
-        dir.x = Input.GetAxis("Horizontal");
-        dir.z = Input.GetAxis("Vertical");
-
-        transform.Translate(dir * moveSpeed * Time.deltaTime);
+        return Physics.CheckCapsule(playerCol.bounds.center,
+            new Vector3(playerCol.bounds.center.x, playerCol.bounds.min.y, playerCol.bounds.center.z),
+            playerCol.radius * .9f, groundLayer);
     }
 }

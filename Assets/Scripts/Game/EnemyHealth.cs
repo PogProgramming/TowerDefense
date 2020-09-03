@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    public Stats statSystem;
     public float health = 100;
     void Start()
     {
-        
+        statSystem = GameObject.Find("UpdateSystem").GetComponent<Stats>();
     }
 
     void Update()
     {
         if (health < 0) {
-            Debug.Log("Yoo I fucking died bro - " + gameObject.name);
+            statSystem.activeEnemies--;
+            statSystem.killedEnemies++;
+
             Destroy(transform.gameObject);
         }
     }

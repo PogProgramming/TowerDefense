@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    Stats statSystem;
+
     public GameObject spawnType;
     public float spawnCooldown = 10;
 
     float spawnTimer = 0;
     void Start()
     {
-
+        statSystem = GetComponent<Stats>();
     }
 
     
@@ -23,6 +25,7 @@ public class Spawner : MonoBehaviour
         {
             if (spawnType != null)
             {
+                statSystem.activeEnemies++;
                 Instantiate(spawnType);
             }
 
