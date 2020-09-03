@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class TroopScript : MonoBehaviour
 {
+    public GameObject bullet;
+
     public LayerMask EnemyLayer;
     public float damage = 1f;
     public float shootCooldown = 0.67f;
     public float viewRadius = 10f;
 
     GameObject targetEnemy = null;
+
+    private bool canSeeEnemy = false;
     
     void Start()
     {
@@ -59,5 +63,8 @@ public class TroopScript : MonoBehaviour
     {
         EnemyHealth enemyhp = enemy.GetComponentInChildren<EnemyHealth>();
         enemyhp.AdjustHealth(-damage);
+
+        GameObject _bullet = Instantiate(bullet);
+        _bullet.GetComponent<BulletScript>().SetTargetPosition(transform.position, enemy.transform.position);
     }
 }

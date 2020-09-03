@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject spawnType;
-    float spawnCooldown = 10;
+    public float spawnCooldown = 10;
 
     float spawnTimer = 0;
     void Start()
