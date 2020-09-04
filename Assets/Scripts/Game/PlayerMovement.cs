@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public GameObject playerCam;
-    private MoveCamera mc;
 
     private Rigidbody playerRb;
     private CapsuleCollider playerCol;
@@ -28,8 +27,6 @@ public class PlayerMovement : MonoBehaviour
         playerRb = transform.GetComponent<Rigidbody>();
         playerRb.freezeRotation = true;
         playerRb.useGravity = false;
-
-        mc = playerCam.GetComponent<MoveCamera>();
     }
 
     void FixedUpdate()
@@ -45,7 +42,6 @@ public class PlayerMovement : MonoBehaviour
         velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
 
         playerRb.AddForce(velocityChange, ForceMode.VelocityChange);
-
         playerRb.AddForce(new Vector3(0, -gravity * playerRb.mass, 0));
     }
 
@@ -58,7 +54,6 @@ public class PlayerMovement : MonoBehaviour
         if (IsGrounded())
         {
             playerRb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
-
         }
     }
 

@@ -2,6 +2,8 @@
 
 public class MoveCamera : MonoBehaviour
 {
+    private PlacementScript troopPlacement;
+   
     public float RotationSpeed = 1;
     public Transform Target, Player;
     float mouseX, mouseY;
@@ -30,6 +32,8 @@ public class MoveCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         character = Target.transform.parent.gameObject;
         character_eyes = character.transform.GetChild(0).gameObject;
+
+        troopPlacement = character.GetComponent<PlacementScript>();
     }
 
     void Update()
@@ -40,12 +44,16 @@ public class MoveCamera : MonoBehaviour
             playing = false;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+
+            troopPlacement.isPlacing = true;
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             playing = true;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+
+            troopPlacement.isPlacing = false;
         }
         if (!thirdperson && playing && !orbiting)
         {
@@ -181,7 +189,6 @@ public class MoveCamera : MonoBehaviour
             {
                 if (playing)
                 {
-                    Debug.Log("HELP");
                     Target.rotation = Quaternion.Euler(mouseY, mouseX, 0);
                 }
             }

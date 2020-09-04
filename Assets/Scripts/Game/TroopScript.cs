@@ -5,16 +5,21 @@ using UnityEngine;
 public class TroopScript : MonoBehaviour
 {
     public GameObject bullet;
-
     public LayerMask EnemyLayer;
-    public float damage = 1f;
-    public float shootCooldown = 0.67f;
-    public float viewRadius = 10f;
 
+    readonly double costMultiplier = 1.6;
+
+    private int level = 0;
+
+    [SerializeField] private int cost = 250;
+    [SerializeField] private float damage = 1f;
+    [SerializeField] private float shootCooldown = 0.67f;
+
+    [SerializeField] private float viewRadius = 10f;
     GameObject targetEnemy = null;
 
     private bool canSeeEnemy = false;
-    
+
     void Start()
     {
         
@@ -35,6 +40,27 @@ public class TroopScript : MonoBehaviour
         }
 
         cooldown += Time.deltaTime;
+    }
+
+    public void LevelUp()
+    {
+        this.level++;
+        cost = (int)(cost * costMultiplier);
+        damage = (int)(damage * costMultiplier);
+        cooldown = cooldown / (float)costMultiplier;
+    }
+
+    public void SetLevel(int level)
+    {
+        //level
+        //cost
+        //damage
+        //cooldown
+
+        this.level = level;
+        cost = level * (int)(cost * costMultiplier);
+        damage = level * (int)(damage * costMultiplier);
+        cooldown = level * (cooldown / (float)costMultiplier);
     }
 
     GameObject FindClosestEnemy()
