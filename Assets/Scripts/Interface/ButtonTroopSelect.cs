@@ -14,6 +14,8 @@ public class ButtonTroopSelect : MonoBehaviour
 
     public void OnClick()
     {
+        Debug.Log("Yes");
         ps.selectedTroopIndex = index;
+        ps.ResetPlaced();
     }
 }

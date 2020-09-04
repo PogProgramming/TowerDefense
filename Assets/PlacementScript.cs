@@ -11,10 +11,10 @@ public class PlacementScript : MonoBehaviour
     Vector3 point = Vector3.zero; // position on the grid
     public int selectedTroopIndex;
 
-    void Start()
-    {
-        
-    }
+    bool placed = true;
+
+    public void Placed() { placed = true; }
+    public void ResetPlaced() { placed = false; }
 
     public Vector3 GetCurrentMouseGridPosition()
     {
@@ -45,10 +45,14 @@ public class PlacementScript : MonoBehaviour
             highlighter.transform.position = point;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (!placed && Input.GetMouseButtonDown(0))
         {
+            Debug.Log("YE34324S");
+
             GameObject obj = Instantiate(troopList[selectedTroopIndex]);
             obj.transform.position = new Vector3(point.x, 1.5f, point.z);
+
+            Placed();
         }
     }
 }

@@ -110,6 +110,7 @@ MonoBehaviour:
   EnemyLayer:
     serializedVersion: 2
     m_Bits: 512
+  cost: 250
   damage: 10
-  shootCooldown: 0.67
+  shootCooldown: 0.2
   viewRadius: 10
