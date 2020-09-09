@@ -21,6 +21,7 @@ public class TroopScript : MonoBehaviour
     private bool displayTroop = false;
 
     public void SetIsDisplayTroop(bool _set) { displayTroop = _set; }
+    public int GetCost() { return cost; }
 
     float cooldown = 0;
     void Update()

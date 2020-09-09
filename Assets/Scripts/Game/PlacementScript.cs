@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlacementScript : MonoBehaviour
 {
+    public Stats statBlock;
+
     public LayerMask EnemyLayerMask;
 
     public GameObject highlighter;
@@ -50,7 +52,7 @@ public class PlacementScript : MonoBehaviour
                 RaycastHit hit;
                 if(Physics.Raycast(point, Vector3.up, out hit, EnemyLayerMask))
                 {
-                   // hit.collider.gameObject.
+                    Debug.Log(hit.collider.name);
                    // get the object and display its interface
                 }
                 
@@ -74,6 +76,8 @@ public class PlacementScript : MonoBehaviour
             {
                 GameObject obj = Instantiate(troopList[selectedTroopIndex]);
                 obj.transform.position = new Vector3(point.x, 1.5f, point.z);
+
+                statBlock.AdjustCash(-obj.GetComponent<TroopScript>().GetCost());
 
                 Placed();
             }
