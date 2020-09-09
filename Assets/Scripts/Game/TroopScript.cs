@@ -18,16 +18,15 @@ public class TroopScript : MonoBehaviour
     [SerializeField] private float viewRadius = 10f;
     GameObject targetEnemy = null;
 
-    private bool canSeeEnemy = false;
+    private bool displayTroop = false;
 
-    void Start()
-    {
-        
-    }
+    public void SetIsDisplayTroop(bool _set) { displayTroop = _set; }
 
     float cooldown = 0;
     void Update()
     {
+        if (displayTroop) return; // for the highlighter
+
         targetEnemy = FindClosestEnemy();
         if(targetEnemy != null)
         {

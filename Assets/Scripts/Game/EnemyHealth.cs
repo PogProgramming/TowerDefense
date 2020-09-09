@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    public int reward = 250;
+
     public Stats statSystem;
     public float health = 100;
+
+    public 
     void Start()
     {
         statSystem = GameObject.Find("UpdateSystem").GetComponent<Stats>();
