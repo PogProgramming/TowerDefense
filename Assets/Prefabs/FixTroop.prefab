@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2356623374324149572}
   - component: {fileID: 2356623374324149573}
   - component: {fileID: 2356623374324149570}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FixTroop
   m_TagString: Untagged
   m_Icon: {fileID: 0}

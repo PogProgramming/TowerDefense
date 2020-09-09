@@ -13,7 +13,7 @@ public class TroopScript : MonoBehaviour
 
     [SerializeField] private int cost = 250;
     [SerializeField] private float damage = 1f;
-    [SerializeField] private float shootCooldown = 0.67f;
+    [SerializeField] private float shootCooldown = 1.2f;
 
     [SerializeField] private float viewRadius = 10f;
     GameObject targetEnemy = null;
@@ -52,11 +52,6 @@ public class TroopScript : MonoBehaviour
 
     public void SetLevel(int level)
     {
-        //level
-        //cost
-        //damage
-        //cooldown
-
         this.level = level;
         cost = level * (int)(cost * costMultiplier);
         damage = level * (int)(damage * costMultiplier);

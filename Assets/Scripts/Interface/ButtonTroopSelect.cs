@@ -9,7 +9,7 @@ public class ButtonTroopSelect : MonoBehaviour
     PlacementScript ps;
     void Start()
     {
-        ps = GameObject.FindGameObjectWithTag("Player").GetComponent<PlacementScript>();
+        ps = GameObject.Find("Player").GetComponent<PlacementScript>();
     }
 
     public void OnClick()

@@ -5,8 +5,11 @@ using UnityEngine.UI;
 
 public class Stats : MonoBehaviour
 {
+    public Text txt_Wave;
+    int wave = 0;
+
     public Text txt_Cash;
-    [SerializeField] long cash = 0;
+    long cash = 0;
 
     public Text txt_ActiveEnemies;
     public long activeEnemies = 0;
@@ -17,6 +20,7 @@ public class Stats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        txt_Wave.text = "Wave " + wave;
         txt_Cash.text = "Cash: " + cash;
         txt_ActiveEnemies.text = "Active Enemies: " + activeEnemies;
         txt_KilledEnemies.text = "Killed Enemies: " + killedEnemies;
@@ -28,4 +32,6 @@ public class Stats : MonoBehaviour
     {
         cash += _incrementation;
     }
+
+    public void SetWave(int wave) { this.wave = wave; }
 }

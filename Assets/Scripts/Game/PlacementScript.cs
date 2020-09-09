@@ -6,14 +6,14 @@ public class PlacementScript : MonoBehaviour
 {
     public Stats statBlock;
 
-    public LayerMask EnemyLayerMask;
+    public LayerMask TroopLayerMask;
 
     public GameObject highlighter;
     public List<GameObject> troopList;
     public bool isPlacing = false;
 
     Vector3 point = Vector3.zero; // position on the grid
-    public int selectedTroopIndex;
+    public int selectedTroopIndex = -1;
 
     bool placed = true;
 
@@ -41,27 +41,25 @@ public class PlacementScript : MonoBehaviour
         {
             point = ray.GetPoint(dist);
             point = new Vector3(Mathf.Round(point.x), 1, Mathf.Round(point.z));
-        }        
+        }
 
-        if (!isPlacing)
+        if (selectedTroopIndex == -1)
         {
             if (highlighter.activeSelf) highlighter.SetActive(false);
 
             if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit hit;
-                if(Physics.Raycast(point, Vector3.up, out hit, EnemyLayerMask))
+                if (Physics.Raycast(ray, out hit, 100, TroopLayerMask))
                 {
                     Debug.Log(hit.collider.name);
-                   // get the object and display its interface
                 }
-                
             }
-            
+
             return;
         }
 
-        if (point != Vector3.zero) 
+        if (point != Vector3.zero)
         {
             highlighter.transform.position = point;
         }
@@ -70,7 +68,7 @@ public class PlacementScript : MonoBehaviour
         {
             if (selectedTroopIndex != -1 && !highlighter.activeSelf)
             {
-                if(!highlighter.activeSelf) highlighter.SetActive(true);
+                if (!highlighter.activeSelf) highlighter.SetActive(true);
             }
             if (Input.GetMouseButtonDown(0))
             {
