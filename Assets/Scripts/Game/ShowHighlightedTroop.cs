@@ -7,7 +7,7 @@ public class ShowHighlightedTroop : MonoBehaviour
     PlacementScript ps;
     void Start()
     {
-        ps = GameObject.FindGameObjectWithTag("Player").GetComponent<PlacementScript>();
+        ps = GameObject.Find("Player").GetComponent<PlacementScript>();
     }
 
     private GameObject displayTroop;

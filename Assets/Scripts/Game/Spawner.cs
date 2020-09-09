@@ -7,35 +7,10 @@ public class Spawner : MonoBehaviour
     Stats statSystem;
     public GameObject spawnType;
 
-    //public float spawnCooldown = 10;
-
-    //float spawnTimer = 0;
-    //void Start()
-    //{
-    //    statSystem = GetComponent<Stats>();
-    //}
-
-
-    //void Update()
-    //{
-    //    spawnCooldown -= Time.deltaTime / 250;
-    //    spawnTimer += Time.deltaTime;
-
-    //    if (spawnTimer > spawnCooldown)
-    //    {
-    //        if (spawnType != null)
-    //        {
-    //            statSystem.activeEnemies++;
-    //            Instantiate(spawnType);
-    //        }
-
-    //        spawnTimer = 0;
-    //    }
-    //}
-
     void Start()
     {
         statSystem = GetComponent<Stats>();
+        statSystem.SetWave(1);
     }
 
     [SerializeField] int amountOfTroops = 0;
@@ -206,7 +181,7 @@ public class Spawner : MonoBehaviour
                 timeBetweenSpawns = 3;
                 break;
         }
-        timeBetweenSpawns = 5.0f / (float)wave;
+        timeBetweenSpawns = 3.0f / (float)wave;
         waveSet = true;
     }
 
@@ -220,6 +195,15 @@ public class Spawner : MonoBehaviour
     int spawnedCount = 0;
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            ManualAdjust(currentWave + 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            ManualAdjust(currentWave - 1);
+        }
+
         if(currentWave != 0 && waveSet == false)
         {
             RunWave(currentWave);
@@ -233,6 +217,7 @@ public class Spawner : MonoBehaviour
             {
                 GameObject en = Instantiate(spawnType);
                 en.GetComponent<EnemyHealth>().SetHealth(Time.deltaTime * (1000 * currentWave));
+                en.GetComponent<EnemyHealth>().reward = (int)(Time.deltaTime * (10000 * currentWave));
 
                 spawnedCount++;
                 statSystem.activeEnemies++;
@@ -243,11 +228,23 @@ public class Spawner : MonoBehaviour
             {
                 spawnedCount = 0;
                 currentWave++;
+                statSystem.SetWave(currentWave);
+
                 waveRunning = false;
                 waveSet = false;
             }
         }
     }
 
+    void ManualAdjust(int _wave)
+    {
+        _wave = _wave - 1;
+        currentWave = _wave;
+        statSystem.SetWave(_wave);
+        RunWave(_wave);
+        spawnedCount = amountOfTroops;
 
+        waveRunning = false;
+        waveSet = false;
+    }
 }
