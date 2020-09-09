@@ -21,4 +21,9 @@ public class Stats : MonoBehaviour
         txt_ActiveEnemies.text = "Active Enemies: " + activeEnemies;
         txt_KilledEnemies.text = "Killed Enemies: " + killedEnemies;
     }
+
+    public void AdjustCash(int _incrementation)
+    {
+        cash += _incrementation;
+    }
 }

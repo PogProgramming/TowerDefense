@@ -9,7 +9,6 @@ public class EnemyHealth : MonoBehaviour
     public Stats statSystem;
     public float health = 100;
 
-    public 
     void Start()
     {
         statSystem = GameObject.Find("UpdateSystem").GetComponent<Stats>();
@@ -20,6 +19,8 @@ public class EnemyHealth : MonoBehaviour
         if (health < 0) {
             statSystem.activeEnemies--;
             statSystem.killedEnemies++;
+
+            statSystem.AdjustCash(reward);
 
             Destroy(transform.gameObject);
         }
