@@ -32,11 +32,11 @@ public class TroopScript : MonoBehaviour
     {
         if (displayTroop) return; // for the highlighter
 
-        targetEnemy = FindClosestEnemy();
-        if(targetEnemy != null)
+        targetEnemy = FindFirstClosestEnemy();
+        if (targetEnemy != null)
         {
             transform.LookAt(targetEnemy.transform);
-            if(cooldown > shootCooldown)
+            if (cooldown > shootCooldown)
             {
                 Shoot(targetEnemy);
                 cooldown = 0;
@@ -48,7 +48,7 @@ public class TroopScript : MonoBehaviour
 
     public void LevelUp()
     {
-        GameObject.Find("UpdateSystem").GetComponent<Stats>().AdjustCash(-cost); 
+        GameObject.Find("UpdateSystem").GetComponent<Stats>().AdjustCash(-cost);
 
         this.level++;
         cost = (long)(cost * costMultiplier);
@@ -70,10 +70,10 @@ public class TroopScript : MonoBehaviour
         GameObject closest = null;
 
         Collider[] cols = Physics.OverlapSphere(transform.position, viewRadius, EnemyLayer);
-        if(cols.Length != 0)
+        if (cols.Length != 0)
         {
             float shortestDistance = viewRadius; // default
-            foreach(Collider objCol in cols)
+            foreach (Collider objCol in cols)
             {
                 float distance = Vector3.Distance(transform.position, objCol.gameObject.transform.position);
                 if (distance < shortestDistance)
@@ -85,6 +85,28 @@ public class TroopScript : MonoBehaviour
         }
 
         return closest;
+    }
+
+    GameObject FindFirstClosestEnemy()
+    {
+        GameObject first = null;
+
+        Collider[] cols = Physics.OverlapSphere(transform.position, viewRadius, EnemyLayer);
+        if (cols.Length != 0)
+        {
+            float longestDistance = 0; // default
+            foreach (Collider objCol in cols)
+            {
+                float distance = objCol.gameObject.GetComponent<TroopMovement>().distanceMade;
+                if (distance > longestDistance)
+                {
+                    first = objCol.gameObject;
+                    longestDistance = distance;
+                }
+            }
+        }
+
+        return first;
     }
 
     void Shoot(GameObject enemy)

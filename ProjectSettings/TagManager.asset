@@ -6,6 +6,7 @@ TagManager:
   tags:
   - tag_CashText
   - MobileControls
+  - tag_EditControls
   layers:
   - Default
   - TransparentFX
