@@ -11,6 +11,7 @@ public class PlacementScript : MonoBehaviour
     public GameObject highlighter;
     public List<GameObject> troopList;
     public bool isPlacing = false;
+    public UpgradeInterface upgradeUI;
 
     Vector3 point = Vector3.zero; // position on the grid
     public int selectedTroopIndex = -1;
@@ -52,7 +53,9 @@ public class PlacementScript : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 100, TroopLayerMask))
                 {
-                    Debug.Log(hit.collider.name);
+                    upgradeUI.SetTroopStats(hit.collider.gameObject);
+                    upgradeUI.HidePurchaseButtons();
+                    upgradeUI.OpenUpgradeOptions();
                 }
             }
 

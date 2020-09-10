@@ -28,7 +28,7 @@ public class Stats : MonoBehaviour
 
     public long GetCash() { return cash; }
 
-    public void AdjustCash(int _incrementation)
+    public void AdjustCash(long _incrementation)
     {
         cash += _incrementation;
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TroopMovement : MonoBehaviour
 {
+    public float distanceMade = 0;
     void Start()
     {
         AddDefaultPositions();
@@ -19,6 +20,7 @@ public class TroopMovement : MonoBehaviour
         if (index == nodes.Count) return;
 
         transform.position = Vector3.MoveTowards(transform.position, nodes[index], 2.5f * Time.deltaTime);
+        distanceMade += 2.5f * Time.deltaTime;
         if (transform.position == nodes[index]) 
         {
             index++;

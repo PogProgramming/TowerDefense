@@ -7,21 +7,25 @@ public class TroopScript : MonoBehaviour
     public GameObject bullet;
     public LayerMask EnemyLayer;
 
-    readonly double costMultiplier = 1.6;
+    readonly float costMultiplier = 1.6f;
 
     private int level = 0;
-
-    [SerializeField] private int cost = 250;
+    [SerializeField] private long cost = 250;
     [SerializeField] private float damage = 1f;
     [SerializeField] private float shootCooldown = 1.2f;
 
-    [SerializeField] private float viewRadius = 10f;
+    [SerializeField] private float viewRadius = 5f;
     GameObject targetEnemy = null;
 
     private bool displayTroop = false;
 
     public void SetIsDisplayTroop(bool _set) { displayTroop = _set; }
-    public int GetCost() { return cost; }
+    public long GetCost() { return cost; }
+    public int GetUpgradeCost() { return (int)(cost * costMultiplier); }
+    public float GetDamage() { return damage; }
+    public float GetShootCooldown() { return shootCooldown; }
+    public float GetViewRadius() { return viewRadius; }
+    public float GetLevel() { return level; }
 
     float cooldown = 0;
     void Update()
@@ -44,10 +48,13 @@ public class TroopScript : MonoBehaviour
 
     public void LevelUp()
     {
+        GameObject.Find("UpdateSystem").GetComponent<Stats>().AdjustCash(-cost); 
+
         this.level++;
-        cost = (int)(cost * costMultiplier);
-        damage = (int)(damage * costMultiplier);
-        cooldown = cooldown / (float)costMultiplier;
+        cost = (long)(cost * costMultiplier);
+        damage = (long)(damage * costMultiplier);
+        cooldown = cooldown / 1.1f;
+        viewRadius++;
     }
 
     public void SetLevel(int level)
