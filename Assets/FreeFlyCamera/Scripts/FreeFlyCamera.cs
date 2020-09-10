@@ -1,6 +1,6 @@
 ﻿//===========================================================================//
-//                       FreeFlyCamera (Version 1.2)                         //
-//                        (c) 2019 Sergey Stafeyev                           //
+//                       FreeFlyCamera (Version 6.9)                         //
+//                       (cx) Harrison Quayle haha ;)                        //
 //===========================================================================//
 
 using UnityEngine;
@@ -138,6 +138,9 @@ public class FreeFlyCamera : MonoBehaviour
         _currentIncrease = Time.deltaTime + Mathf.Pow(_currentIncreaseMem, 3) * Time.deltaTime;
     }
 
+    public float dragSpeed = 2;
+    private Vector3 dragOrigin;
+
     private void Update()
     {
         if (!_active)
@@ -145,7 +148,7 @@ public class FreeFlyCamera : MonoBehaviour
 
         SetCursorState();
 
-        if (Cursor.visible)
+        if (Application.isMobilePlatform && Cursor.visible)
             return;
 
         // Translation
@@ -186,22 +189,40 @@ public class FreeFlyCamera : MonoBehaviour
 
             transform.position += deltaPosition * currentSpeed * _currentIncrease;
         }
-
+        
         // Rotation
         if (_enableRotation)
         {
-            // Pitch
-            transform.rotation *= Quaternion.AngleAxis(
-                -Input.GetAxis("Mouse Y") * _mouseSense,
-                Vector3.right
-            );
+            if (!Cursor.visible)
+            {
+                // Pitch
+                transform.rotation *= Quaternion.AngleAxis(
+                    -Input.GetAxis("Mouse Y") * _mouseSense,
+                    Vector3.right
+                );
 
-            // Paw
-            transform.rotation = Quaternion.Euler(
-                transform.eulerAngles.x,
-                transform.eulerAngles.y + Input.GetAxis("Mouse X") * _mouseSense,
-                transform.eulerAngles.z
-            );
+                // Paw
+                transform.rotation = Quaternion.Euler(
+                    transform.eulerAngles.x,
+                    transform.eulerAngles.y + Input.GetAxis("Mouse X") * _mouseSense,
+                    transform.eulerAngles.z
+                );
+            }
+            else if (!Application.isMobilePlatform)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    dragOrigin = Input.mousePosition;
+                    return;
+                }
+
+                if (!Input.GetMouseButton(0)) return;
+
+                Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
+                Vector3 move = new Vector3(pos.x * dragSpeed, 0, pos.y * dragSpeed);
+
+                transform.Translate(move, Space.World);
+            }
         }
 
         // Return to init position

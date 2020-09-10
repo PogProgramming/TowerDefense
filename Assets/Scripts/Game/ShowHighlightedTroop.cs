@@ -10,6 +10,7 @@ public class ShowHighlightedTroop : MonoBehaviour
         ps = GameObject.Find("Player").GetComponent<PlacementScript>();
     }
 
+    public Material tranMat;
     private GameObject displayTroop;
     bool instantiated = false;
     void Update()
@@ -21,7 +22,7 @@ public class ShowHighlightedTroop : MonoBehaviour
             instantiated = true;
 
             Material troopMaterial = displayTroop.GetComponent<MeshRenderer>().material;
-            displayTroop.GetComponent<MeshRenderer>().material = GetAdjustedMaterial(troopMaterial);
+            displayTroop.GetComponent<MeshRenderer>().material = tranMat;
         }
         else
         {

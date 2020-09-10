@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - tag_CashText
+  - MobileControls
   layers:
   - Default
   - TransparentFX
