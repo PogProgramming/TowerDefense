@@ -21,7 +21,7 @@ public class TroopScript : MonoBehaviour
 
     public void SetIsDisplayTroop(bool _set) { displayTroop = _set; }
     public long GetCost() { return cost; }
-    public int GetUpgradeCost() { return (int)(cost * costMultiplier); }
+    public long GetUpgradeCost() { return (long)(cost * costMultiplier); }
     public float GetDamage() { return damage; }
     public float GetShootCooldown() { return shootCooldown; }
     public float GetViewRadius() { return viewRadius; }
@@ -48,12 +48,10 @@ public class TroopScript : MonoBehaviour
 
     public void LevelUp()
     {
-        GameObject.Find("UpdateSystem").GetComponent<Stats>().AdjustCash(-cost);
-
         this.level++;
         cost = (long)(cost * costMultiplier);
         damage = (long)(damage * costMultiplier);
-        cooldown = cooldown / 1.1f;
+        shootCooldown /= 1.1f;
         viewRadius++;
     }
 
@@ -62,7 +60,7 @@ public class TroopScript : MonoBehaviour
         this.level = level;
         cost = level * (int)(cost * costMultiplier);
         damage = level * (int)(damage * costMultiplier);
-        cooldown = level * (cooldown / (float)costMultiplier);
+        shootCooldown = level * (cooldown / (float)costMultiplier);
     }
 
     GameObject FindClosestEnemy()

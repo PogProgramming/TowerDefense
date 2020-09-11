@@ -9,7 +9,7 @@ public class Stats : MonoBehaviour
     int wave = 0;
 
     public Text txt_Cash;
-    long cash = 0;
+    public long cash = 0;
 
     public Text txt_ActiveEnemies;
     public long activeEnemies = 0;
@@ -30,7 +30,13 @@ public class Stats : MonoBehaviour
 
     public void AdjustCash(long _incrementation)
     {
+        Debug.Log("ADJUSTING CASH BY " + _incrementation);
         cash += _incrementation;
+    }
+
+    public void RemoveCash(long _decrementation) {
+        Debug.Log("ADJUSTING CASH BY " + _decrementation); 
+        cash -= _decrementation; 
     }
 
     public void SetWave(int wave) { this.wave = wave; }

@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json.Bson;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UpgradeInterface : MonoBehaviour
 {
+    public Stats stats;
+
     public GameObject editPanel;
 
     public GameObject upgradePanel;
@@ -22,23 +21,30 @@ public class UpgradeInterface : MonoBehaviour
 
     }
 
-
     void Update()
     {
-        if (troop != null)
-        {
-            Debug.Log("troopname: " + troop.name);
-        }
+
     }
     public void OpenPurchaseButtons() { editPanel.SetActive(true); }
     public void HidePurchaseButtons() { editPanel.SetActive(false); }
     public void OpenUpgradeOptions() { upgradePanel.SetActive(true); }
     public void HideUpgradeOptions() { upgradePanel.SetActive(false); }
 
-    public void SetTroopStats(GameObject _troop)
+    public void HideUpgradeAndOpenPurchase()
+    {
+        HideUpgradeOptions();
+        OpenPurchaseButtons();
+    }
+
+    public void SetTroop(GameObject _troop)
     {
         troop = _troop;
-        TroopScript ts = _troop.GetComponent<TroopScript>();
+
+        SetTroopStats();
+    }
+    public void SetTroopStats()
+    {
+        TroopScript ts = troop.GetComponent<TroopScript>();
 
         txt_level.text = "Level: " + ts.GetLevel();
         txt_damage.text = "Damage: " + ts.GetDamage();
@@ -49,7 +55,16 @@ public class UpgradeInterface : MonoBehaviour
 
     public void LevelUp()
     {
-        troop.GetComponent<TroopScript>().LevelUp();
+        TroopScript ts = troop.GetComponent<TroopScript>();
+        long cost = ts.GetUpgradeCost();
+        Debug.Log(cost);
+        if (stats.GetCash() >= cost && ts.GetLevel() != 69)
+        {
+            stats.AdjustCash(-cost);
+            ts.LevelUp();
+        }
+
+        SetTroopStats();
     }
 
     private bool updated = false;

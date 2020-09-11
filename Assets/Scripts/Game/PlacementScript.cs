@@ -53,7 +53,7 @@ public class PlacementScript : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 100, TroopLayerMask))
                 {
-                    upgradeUI.SetTroopStats(hit.collider.gameObject);
+                    upgradeUI.SetTroop(hit.collider.gameObject);
                     upgradeUI.HidePurchaseButtons();
                     upgradeUI.OpenUpgradeOptions();
                 }
