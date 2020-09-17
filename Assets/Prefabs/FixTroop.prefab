@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2356623374324149570}
   m_Layer: 10
   m_Name: FixTroop
-  m_TagString: Untagged
+  m_TagString: Troop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,6 +111,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   cost: 550
-  damage: 10
-  shootCooldown: 0.2
-  viewRadius: 10
+  damage: 4
+  shootCooldown: 1
+  viewRadius: 5

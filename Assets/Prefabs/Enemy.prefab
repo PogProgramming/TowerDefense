@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5334044956103155030}
   m_Layer: 9
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -325,6 +325,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a37d70160f073b468b10023161a68b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameHealth: {fileID: 0}
+  distanceMade: 0
 --- !u!114 &5334044956103155030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,6 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6aaf1e86846b1446ad9837d807f98d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reward: 250
   statSystem: {fileID: 0}
   health: 1000
 --- !u!1 &9185277479122891787

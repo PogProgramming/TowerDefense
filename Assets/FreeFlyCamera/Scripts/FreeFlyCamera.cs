@@ -4,6 +4,7 @@
 //===========================================================================//
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Camera))]
 public class FreeFlyCamera : MonoBehaviour
@@ -50,18 +51,18 @@ public class FreeFlyCamera : MonoBehaviour
     [Tooltip("Speed of the quick camera movement when holding the 'Left Shift' key")]
     private float _boostedSpeed = 50f;
 
-    [SerializeField]
-    [Tooltip("Move up")]
-    private KeyCode _moveUp = KeyCode.E;
+    //[SerializeField]
+    //[Tooltip("Move up")]
+    //private KeyCode _moveUp = KeyCode.E;
 
-    [SerializeField]
-    [Tooltip("Move down")]
-    private KeyCode _moveDown = KeyCode.Q;
+    //[SerializeField]
+    //[Tooltip("Move down")]
+    //private KeyCode _moveDown = KeyCode.Q;
 
     [Space]
 
-    [SerializeField]
-    [Tooltip("Acceleration at camera movement is active")]
+    //[SerializeField]
+    //[Tooltip("Acceleration at camera movement is active")]
     private bool _enableSpeedAcceleration = true;
 
     [SerializeField]
@@ -72,7 +73,7 @@ public class FreeFlyCamera : MonoBehaviour
 
     [SerializeField]
     [Tooltip("This keypress will move the camera to initialization position")]
-    private KeyCode _initPositonButton = KeyCode.R;
+    //private KeyCode _initPositonButton = KeyCode.R;
 
     #endregion UI
 
@@ -92,6 +93,7 @@ public class FreeFlyCamera : MonoBehaviour
     }
 #endif
 
+    public InputActionMap inputMap;
 
     private void Start()
     {
@@ -108,12 +110,12 @@ public class FreeFlyCamera : MonoBehaviour
     // Apply requested cursor state
     private void SetCursorState()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             Cursor.lockState = _wantedMode = CursorLockMode.None;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             _wantedMode = CursorLockMode.Locked;
         }
@@ -139,7 +141,7 @@ public class FreeFlyCamera : MonoBehaviour
     }
 
     public float dragSpeed = 2;
-    private Vector3 dragOrigin;
+    private Vector2 dragOrigin;
 
     private void Update()
     {
@@ -154,7 +156,7 @@ public class FreeFlyCamera : MonoBehaviour
         // Translation
         if (_enableTranslation)
         {
-            transform.Translate(Vector3.forward * Input.mouseScrollDelta.y * Time.deltaTime * _translationSpeed);
+            transform.Translate(Vector3.forward * Mouse.current.scroll.ReadValue().y * Time.deltaTime * _translationSpeed);
         }
 
         // Movement
@@ -163,34 +165,44 @@ public class FreeFlyCamera : MonoBehaviour
             Vector3 deltaPosition = Vector3.zero;
             float currentSpeed = _movementSpeed;
 
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Keyboard.current.leftShiftKey.isPressed)
+            {
                 currentSpeed = _boostedSpeed;
+            }
 
-            if (Input.GetKey(KeyCode.W))
+            if (Keyboard.current.wKey.isPressed)
+            {
                 deltaPosition += transform.forward;
+            }
 
-            if (Input.GetKey(KeyCode.S))
+            if (Keyboard.current.sKey.isPressed)
+            {
                 deltaPosition -= transform.forward;
+            }
 
-            if (Input.GetKey(KeyCode.A))
+            if (Keyboard.current.aKey.isPressed)
+            {
                 deltaPosition -= transform.right;
+            }
 
-            if (Input.GetKey(KeyCode.D))
+            if (Keyboard.current.dKey.isPressed)
+            {
                 deltaPosition += transform.right;
+            }
 
-            if (Input.GetKey(_moveUp))
-                deltaPosition += transform.up;
+            //if (Input.GetKey(_moveUp))
+            //    deltaPosition += transform.up;
 
-            if (Input.GetKey(_moveDown))
-                deltaPosition -= transform.up;
+            //if (Input.GetKey(_moveDown))
+            //    deltaPosition -= transform.up;
 
             // Calc acceleration
             CalculateCurrentIncrease(deltaPosition != Vector3.zero);
 
             transform.position += deltaPosition * currentSpeed * _currentIncrease;
         }
-        
-        // Rotation
+
+        //Rotation
         if (_enableRotation)
         {
             if (!Cursor.visible)
@@ -208,28 +220,30 @@ public class FreeFlyCamera : MonoBehaviour
                     transform.eulerAngles.z
                 );
             }
-            else if (!Application.isMobilePlatform)
+            else
+            if (!Application.isMobilePlatform)
             {
-                if (Input.GetMouseButtonDown(0))
+                if (Mouse.current.leftButton.wasPressedThisFrame)
                 {
-                    dragOrigin = Input.mousePosition;
+                    dragOrigin = Mouse.current.position.ReadValue();
                     return;
                 }
 
-                if (!Input.GetMouseButton(0)) return;
+                if (!Mouse.current.leftButton.isPressed) return;
 
-                Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-                Vector3 move = new Vector3(pos.x * dragSpeed, 0, pos.y * dragSpeed);
+        Debug.Log("HERE");
+                Vector3 pos = Camera.main.ScreenToViewportPoint(Mouse.current.position.ReadValue() - dragOrigin);
+                Vector3 move = new Vector3(pos.x * 2f, 0, pos.y * 2f);
 
                 transform.Translate(move, Space.World);
             }
         }
 
-        // Return to init position
-        if (Input.GetKeyDown(_initPositonButton))
-        {
-            transform.position = _initPosition;
-            transform.eulerAngles = _initRotation;
-        }
+        //Return to init position
+        //if ()
+        //{
+        //    transform.position = _initPosition;
+        //    transform.eulerAngles = _initRotation;
+        //}
     }
 }

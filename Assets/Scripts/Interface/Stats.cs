@@ -30,7 +30,6 @@ public class Stats : MonoBehaviour
 
     public void AdjustCash(long _incrementation)
     {
-        Debug.Log("ADJUSTING CASH BY " + _incrementation);
         cash += _incrementation;
     }
 

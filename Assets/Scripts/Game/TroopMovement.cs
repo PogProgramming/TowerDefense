@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class TroopMovement : MonoBehaviour
 {
+    public GameHealth gameHealth;
     public float distanceMade = 0;
+
+    [SerializeField] private float movementSpeed = 2.5f;
     void Start()
     {
         AddDefaultPositions();
+        gameHealth = GameObject.Find("UpdateSystem").GetComponent<GameHealth>();
     }
 
 
@@ -16,10 +20,9 @@ public class TroopMovement : MonoBehaviour
     int index = 0;
     void Update()
     {
-
         if (index == nodes.Count) return;
 
-        transform.position = Vector3.MoveTowards(transform.position, nodes[index], 2.5f * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, nodes[index], movementSpeed * Time.deltaTime);
         distanceMade += 2.5f * Time.deltaTime;
         if (transform.position == nodes[index]) 
         {
@@ -28,8 +31,8 @@ public class TroopMovement : MonoBehaviour
 
         if (index == 11)
         {
-            transform.position = new Vector3(30, 1.5f, -1);
-            index = 0;
+            gameHealth.ReduceHealth((int)GetComponent<EnemyHealth>().GetHealth());
+            GetComponent<EnemyHealth>().health = -1;
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlacementScript : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class PlacementScript : MonoBehaviour
     public LayerMask TroopLayerMask;
 
     public GameObject highlighter;
+    public GameObject viewDistanceHighlighter;
+
     public List<GameObject> troopList;
     public bool isPlacing = false;
     public UpgradeInterface upgradeUI;
@@ -37,7 +40,7 @@ public class PlacementScript : MonoBehaviour
         Plane plane = new Plane(Vector3.up, -1.1f);
 
         float dist;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (plane.Raycast(ray, out dist))
         {
             point = ray.GetPoint(dist);
@@ -46,9 +49,17 @@ public class PlacementScript : MonoBehaviour
 
         if (selectedTroopIndex == -1)
         {
-            if (highlighter.activeSelf) highlighter.SetActive(false);
+            if (highlighter.activeSelf)
+            {
+                highlighter.SetActive(false);
+            }
 
-            if (Input.GetMouseButtonDown(0))
+            if (viewDistanceHighlighter.activeSelf)
+            {
+                viewDistanceHighlighter.SetActive(false);
+            }
+
+            if (Mouse.current.leftButton.wasPressedThisFrame)
             {
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 100, TroopLayerMask))
@@ -65,15 +76,23 @@ public class PlacementScript : MonoBehaviour
         if (point != Vector3.zero)
         {
             highlighter.transform.position = point;
+            viewDistanceHighlighter.transform.position = point;
         }
 
         if (!placed)
         {
-            if (selectedTroopIndex != -1 && !highlighter.activeSelf)
+            if (selectedTroopIndex != -1 && !highlighter.activeSelf && !viewDistanceHighlighter.activeSelf)
             {
-                if (!highlighter.activeSelf) highlighter.SetActive(true);
+                if (!highlighter.activeSelf)
+                {
+                    highlighter.SetActive(true);
+                    viewDistanceHighlighter.SetActive(true);
+
+                    float distance = troopList[selectedTroopIndex].GetComponent<TroopScript>().GetViewRadius();
+                    viewDistanceHighlighter.transform.localScale = new Vector3(distance, 0.001f, distance);
+                }
             }
-            if (Input.GetMouseButtonDown(0))
+            if (Mouse.current.leftButton.wasPressedThisFrame)
             {
                 GameObject obj = Instantiate(troopList[selectedTroopIndex]);
                 obj.transform.position = new Vector3(point.x, 1.5f, point.z);

@@ -28,11 +28,24 @@ public class TroopScript : MonoBehaviour
     public float GetLevel() { return level; }
 
     float cooldown = 0;
+
     void Update()
     {
         if (displayTroop) return; // for the highlighter
 
-        targetEnemy = FindFirstClosestEnemy();
+        switch (attackmode)
+        {
+            case AttackMode.Closest:
+                targetEnemy = FindClosestEnemy();
+                break;
+            case AttackMode.First:
+                targetEnemy = FindFirstClosestEnemy();
+                break;
+            case AttackMode.Strongest:
+                targetEnemy = FindStrongestEnemy();
+                break;
+        }
+
         if (targetEnemy != null)
         {
             transform.LookAt(targetEnemy.transform);
@@ -44,6 +57,46 @@ public class TroopScript : MonoBehaviour
         }
 
         cooldown += Time.deltaTime;
+
+        AttackModeUpdate();
+    }
+
+    public enum AttackMode
+    {
+        First,
+        Closest,
+        Strongest
+    }
+
+    AttackMode attackmode = AttackMode.First;
+    bool attackChanged = false;
+    private void AttackModeUpdate()
+    {
+        if (!attackChanged) return;
+        switch (attackmode)
+        {
+            case AttackMode.First:
+                ChangeAttackMode(AttackMode.First);
+                attackChanged = true;
+                break;
+
+            case AttackMode.Closest:
+                ChangeAttackMode(AttackMode.Closest);
+                attackChanged = true;
+                break;
+
+            case AttackMode.Strongest:
+                ChangeAttackMode(AttackMode.Strongest);
+                attackChanged = true;
+                break;
+        }
+    }
+    public void ChangeAttackMode(AttackMode mode)
+    {
+        if (attackmode != mode) { 
+            attackmode = mode;
+            attackChanged = false;
+        }
     }
 
     public void LevelUp()
@@ -100,6 +153,27 @@ public class TroopScript : MonoBehaviour
                 {
                     first = objCol.gameObject;
                     longestDistance = distance;
+                }
+            }
+        }
+
+        return first;
+    }
+    GameObject FindStrongestEnemy()
+    {
+        GameObject first = null;
+
+        Collider[] cols = Physics.OverlapSphere(transform.position, viewRadius, EnemyLayer);
+        if (cols.Length != 0)
+        {
+            float highestHealth = 0; // default
+            foreach (Collider objCol in cols)
+            {
+                float health = objCol.gameObject.GetComponent<EnemyHealth>().health;
+                if (health > highestHealth)
+                {
+                    first = objCol.gameObject;
+                    highestHealth = health;
                 }
             }
         }

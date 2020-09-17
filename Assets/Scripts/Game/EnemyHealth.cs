@@ -17,16 +17,23 @@ public class EnemyHealth : MonoBehaviour
     void Update()
     {
         if (health < 0) {
-            statSystem.activeEnemies--;
-            statSystem.killedEnemies++;
-
-            statSystem.AdjustCash(reward);
-
-            Destroy(transform.gameObject);
+            Kill(true);
         }
     }
 
     public float GetHealth() { return health; }
     public void SetHealth(float newHealth) { health = newHealth; }
     public void AdjustHealth(float adjustment) { health += adjustment; }
+    public void Kill(bool giveReward)
+    {
+        if (giveReward)
+        {
+            statSystem.AdjustCash(reward);
+            statSystem.killedEnemies++;
+        }
+
+        statSystem.activeEnemies--;
+
+        Destroy(transform.gameObject);
+    }
 }

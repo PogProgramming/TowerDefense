@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Spawner : MonoBehaviour
 {
@@ -195,11 +196,11 @@ public class Spawner : MonoBehaviour
     int spawnedCount = 0;
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if(Keyboard.current.upArrowKey.isPressed)
         {
             ManualAdjust(currentWave + 1);
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Keyboard.current.downArrowKey.wasPressedThisFrame)
         {
             ManualAdjust(currentWave - 1);
         }
@@ -236,7 +237,7 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    void ManualAdjust(int _wave)
+    public void ManualAdjust(int _wave)
     {
         _wave = _wave - 1;
         currentWave = _wave;
@@ -247,4 +248,7 @@ public class Spawner : MonoBehaviour
         waveRunning = false;
         waveSet = false;
     }
+
+    public void StopWaves() { waveRunning = false; }
+    public void StartWaves() { waveRunning = true; }
 }
