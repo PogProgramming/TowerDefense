@@ -24,6 +24,8 @@ public class MobileButtons : MonoBehaviour
             btn.SetActive(false);
         }
         btn_View.SetActive(true);
+
+        Camera.main.GetComponent<FreeFlyCamera>().isInViewMode = false;
     }
 
     public void RunViewMode()
@@ -34,5 +36,7 @@ public class MobileButtons : MonoBehaviour
         {
             btn.SetActive(true);
         }
+
+        Camera.main.GetComponent<FreeFlyCamera>().isInViewMode = true;
     }
 }

@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class UpgradeInterface : MonoBehaviour
 {
+    public bool upgrading = false;
+
     public Stats stats;
 
     public GameObject editPanel;
@@ -16,7 +18,7 @@ public class UpgradeInterface : MonoBehaviour
 
     public GameObject troop;
     bool changed = false;
-    public GameObject viewDistanceHighlighter; 
+    public GameObject viewDistanceHighlighter;
 
     void Start()
     {
@@ -27,7 +29,7 @@ public class UpgradeInterface : MonoBehaviour
     {
         if (upgradePanel.activeSelf)
         {
-            float scale = troop.GetComponent<TroopScript>().GetViewRadius();
+            float scale = troop.GetComponent<TroopScript>().GetViewRadius() * 2;
             viewDistanceHighlighter.transform.localScale = new Vector3(scale, 0.001f, scale);
 
             Vector3 position = new Vector3(troop.transform.position.x, 1f, troop.transform.position.z);
@@ -38,8 +40,8 @@ public class UpgradeInterface : MonoBehaviour
 
     public void OpenPurchaseButtons() { editPanel.SetActive(true); changed = true; }
     public void HidePurchaseButtons() { editPanel.SetActive(false); changed = true; }
-    public void OpenUpgradeOptions() { upgradePanel.SetActive(true); changed = true; }
-    public void HideUpgradeOptions() { upgradePanel.SetActive(false); changed = true; }
+    public void OpenUpgradeOptions() { upgradePanel.SetActive(true); changed = true; upgrading = true; }
+    public void HideUpgradeOptions() { upgradePanel.SetActive(false); changed = true; upgrading = false; }
 
     public void HideUpgradeAndOpenPurchase()
     {
@@ -80,7 +82,7 @@ public class UpgradeInterface : MonoBehaviour
 
         SetTroopStats();
 
-        float scale = troop.GetComponent<TroopScript>().GetViewRadius();
+        float scale = troop.GetComponent<TroopScript>().GetViewRadius() * 2;
         viewDistanceHighlighter.transform.localScale = new Vector3(scale, 0.001f, scale);
     }
 

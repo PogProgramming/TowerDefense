@@ -93,7 +93,8 @@ public class TroopScript : MonoBehaviour
     }
     public void ChangeAttackMode(AttackMode mode)
     {
-        if (attackmode != mode) { 
+        if (attackmode != mode)
+        {
             attackmode = mode;
             attackChanged = false;
         }
@@ -105,7 +106,8 @@ public class TroopScript : MonoBehaviour
         cost = (long)(cost * costMultiplier);
         damage = (long)(damage * costMultiplier);
         shootCooldown /= 1.1f;
-        viewRadius++;
+
+        if (level % 10 == 0) viewRadius++;
     }
 
     public void SetLevel(int level)

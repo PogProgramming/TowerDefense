@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,6 +12,7 @@ public class PlacementScript : MonoBehaviour
 
     public GameObject highlighter;
     public GameObject viewDistanceHighlighter;
+    private BadSpotDistanceHighlighter viewDistanceHighlighterScript;
 
     public List<GameObject> troopList;
     public bool isPlacing = false;
@@ -33,6 +35,11 @@ public class PlacementScript : MonoBehaviour
     public Vector3 GetCurrentMouseGridPosition()
     {
         return point;
+    }
+
+    void Start()
+    {
+        viewDistanceHighlighterScript = viewDistanceHighlighter.GetComponent<BadSpotDistanceHighlighter>();
     }
 
     void Update()
@@ -64,9 +71,12 @@ public class PlacementScript : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 100, TroopLayerMask))
                 {
-                    upgradeUI.SetTroop(hit.collider.gameObject);
-                    upgradeUI.HidePurchaseButtons();
-                    upgradeUI.OpenUpgradeOptions();
+                    if (!Camera.main.GetComponent<FreeFlyCamera>().isInViewMode || !Application.isMobilePlatform)
+                    {
+                        upgradeUI.SetTroop(hit.collider.gameObject);
+                        upgradeUI.HidePurchaseButtons();
+                        upgradeUI.OpenUpgradeOptions();
+                    }
                 }
             }
 
@@ -88,11 +98,11 @@ public class PlacementScript : MonoBehaviour
                     highlighter.SetActive(true);
                     viewDistanceHighlighter.SetActive(true);
 
-                    float distance = troopList[selectedTroopIndex].GetComponent<TroopScript>().GetViewRadius();
+                    float distance = troopList[selectedTroopIndex].GetComponent<TroopScript>().GetViewRadius() * 2;
                     viewDistanceHighlighter.transform.localScale = new Vector3(distance, 0.001f, distance);
                 }
             }
-            if (Mouse.current.leftButton.wasPressedThisFrame)
+            if (Mouse.current.leftButton.wasPressedThisFrame && viewDistanceHighlighterScript.safe)
             {
                 GameObject obj = Instantiate(troopList[selectedTroopIndex]);
                 obj.transform.position = new Vector3(point.x, 1.5f, point.z);

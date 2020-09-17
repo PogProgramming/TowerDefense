@@ -1,6 +1,6 @@
 ﻿//===========================================================================//
 //                       FreeFlyCamera (Version 6.9)                         //
-//                       (cx) Harrison Quayle haha ;)                        //
+//                       (cx ew) haha ;)                                     //
 //===========================================================================//
 
 using UnityEngine;
@@ -143,6 +143,8 @@ public class FreeFlyCamera : MonoBehaviour
     public float dragSpeed = 2;
     private Vector2 dragOrigin;
 
+    public bool isInViewMode = true;
+
     private void Update()
     {
         if (!_active)
@@ -221,7 +223,7 @@ public class FreeFlyCamera : MonoBehaviour
                 );
             }
             else
-            if (!Application.isMobilePlatform)
+            if (Application.isMobilePlatform && isInViewMode)
             {
                 if (Mouse.current.leftButton.wasPressedThisFrame)
                 {
@@ -231,7 +233,6 @@ public class FreeFlyCamera : MonoBehaviour
 
                 if (!Mouse.current.leftButton.isPressed) return;
 
-        Debug.Log("HERE");
                 Vector3 pos = Camera.main.ScreenToViewportPoint(Mouse.current.position.ReadValue() - dragOrigin);
                 Vector3 move = new Vector3(pos.x * 2f, 0, pos.y * 2f);
 
