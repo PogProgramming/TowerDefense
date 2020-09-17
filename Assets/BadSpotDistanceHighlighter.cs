@@ -11,6 +11,7 @@ public class BadSpotDistanceHighlighter : MonoBehaviour
     public Material badMaterial;
     public Material goodMaterial;
 
+    public LayerMask groundLayer;
     public LayerMask pathLayer;
     public LayerMask troopLayer;
 
@@ -29,6 +30,14 @@ public class BadSpotDistanceHighlighter : MonoBehaviour
         if (cols.Length > 1)
             safe = false;
 
+        Vector3 rayCastOrigin = transform.position;
+        rayCastOrigin.y += 5;
+        RaycastHit hit;
+        if (!Physics.Raycast(rayCastOrigin, Vector3.down, out hit, 10f, groundLayer))
+        {
+            safe = false;
+        }
+
         if (safe)
         {
             if (gameObject.GetComponent<MeshRenderer>().material != goodMaterial)
@@ -38,6 +47,6 @@ public class BadSpotDistanceHighlighter : MonoBehaviour
         {
             if (gameObject.GetComponent<MeshRenderer>().material != badMaterial)
                 gameObject.GetComponent<MeshRenderer>().material = badMaterial;
-        }       
+        }
     }
 }

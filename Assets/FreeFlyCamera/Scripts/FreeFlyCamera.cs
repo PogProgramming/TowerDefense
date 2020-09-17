@@ -223,7 +223,7 @@ public class FreeFlyCamera : MonoBehaviour
                 );
             }
             else
-            if (Application.isMobilePlatform && isInViewMode)
+            if (!Application.isMobilePlatform && isInViewMode)
             {
                 if (Mouse.current.leftButton.wasPressedThisFrame)
                 {

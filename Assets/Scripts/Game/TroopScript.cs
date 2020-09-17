@@ -91,6 +91,7 @@ public class TroopScript : MonoBehaviour
                 break;
         }
     }
+
     public void ChangeAttackMode(AttackMode mode)
     {
         if (attackmode != mode)

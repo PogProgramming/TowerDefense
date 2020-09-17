@@ -9,6 +9,7 @@ TagManager:
   - tag_EditControls
   - Enemy
   - Troop
+  - Path
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Ground
   - Enemy
   - Troop
-  - 
+  - Path
   - 
   - 
   - 

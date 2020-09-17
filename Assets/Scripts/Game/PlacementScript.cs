@@ -93,14 +93,11 @@ public class PlacementScript : MonoBehaviour
         {
             if (selectedTroopIndex != -1 && !highlighter.activeSelf && !viewDistanceHighlighter.activeSelf)
             {
-                if (!highlighter.activeSelf)
-                {
-                    highlighter.SetActive(true);
-                    viewDistanceHighlighter.SetActive(true);
+                highlighter.SetActive(true);
+                viewDistanceHighlighter.SetActive(true);
 
-                    float distance = troopList[selectedTroopIndex].GetComponent<TroopScript>().GetViewRadius() * 2;
-                    viewDistanceHighlighter.transform.localScale = new Vector3(distance, 0.001f, distance);
-                }
+                float distance = troopList[selectedTroopIndex].GetComponent<TroopScript>().GetViewRadius() * 2;
+                viewDistanceHighlighter.transform.localScale = new Vector3(distance, 0.001f, distance);
             }
             if (Mouse.current.leftButton.wasPressedThisFrame && viewDistanceHighlighterScript.safe)
             {
