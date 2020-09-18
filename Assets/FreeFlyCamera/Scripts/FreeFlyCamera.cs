@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 [RequireComponent(typeof(Camera))]
 public class FreeFlyCamera : MonoBehaviour
@@ -93,12 +94,29 @@ public class FreeFlyCamera : MonoBehaviour
     }
 #endif
 
-    public InputActionMap inputMap;
+    private bool controllerConnected = false;
 
     private void Start()
     {
         _initPosition = transform.position;
         _initRotation = transform.eulerAngles;
+
+        //Get Joystick Names
+        string[] temp = Input.GetJoystickNames();
+
+        //Check whether array contains anything
+        if (temp.Length > 0)
+        {
+            //Iterate over every element
+            for (int i = 0; i < temp.Length; ++i)
+            {
+                //Check if the string is empty or not
+                if (!string.IsNullOrEmpty(temp[i]))
+                {
+                    controllerConnected = true;
+                }
+            }
+        }
     }
 
     private void OnEnable()
@@ -167,36 +185,44 @@ public class FreeFlyCamera : MonoBehaviour
             Vector3 deltaPosition = Vector3.zero;
             float currentSpeed = _movementSpeed;
 
-            if (Keyboard.current.leftShiftKey.isPressed)
+            if (controllerConnected)
             {
-                currentSpeed = _boostedSpeed;
+                transform.Translate(Vector3.forward * -Input.GetAxis("LJoystick Y") * 100f * Time.deltaTime);
+                transform.Translate(Vector3.right * Input.GetAxis("LJoystick X") * 100f * Time.deltaTime);
             }
-
-            if (Keyboard.current.wKey.isPressed)
+            else
             {
-                deltaPosition += transform.forward;
+                if (Keyboard.current.leftShiftKey.isPressed)
+                {
+                    currentSpeed = _boostedSpeed;
+                }
+
+                if (Keyboard.current.wKey.isPressed)
+                {
+                    deltaPosition += transform.forward;
+                }
+
+                if (Keyboard.current.sKey.isPressed)
+                {
+                    deltaPosition -= transform.forward;
+                }
+
+                if (Keyboard.current.aKey.isPressed)
+                {
+                    deltaPosition -= transform.right;
+                }
+
+                if (Keyboard.current.dKey.isPressed)
+                {
+                    deltaPosition += transform.right;
+                }
+
+                //if (Input.GetKey(_moveUp))
+                //    deltaPosition += transform.up;
+
+                //if (Input.GetKey(_moveDown))
+                //    deltaPosition -= transform.up;
             }
-
-            if (Keyboard.current.sKey.isPressed)
-            {
-                deltaPosition -= transform.forward;
-            }
-
-            if (Keyboard.current.aKey.isPressed)
-            {
-                deltaPosition -= transform.right;
-            }
-
-            if (Keyboard.current.dKey.isPressed)
-            {
-                deltaPosition += transform.right;
-            }
-
-            //if (Input.GetKey(_moveUp))
-            //    deltaPosition += transform.up;
-
-            //if (Input.GetKey(_moveDown))
-            //    deltaPosition -= transform.up;
 
             // Calc acceleration
             CalculateCurrentIncrease(deltaPosition != Vector3.zero);
@@ -209,18 +235,34 @@ public class FreeFlyCamera : MonoBehaviour
         {
             if (!Cursor.visible)
             {
-                // Pitch
-                transform.rotation *= Quaternion.AngleAxis(
-                    -Input.GetAxis("Mouse Y") * _mouseSense,
-                    Vector3.right
-                );
+                if (controllerConnected)
+                {
+                    transform.rotation *= Quaternion.AngleAxis(
+                        -Input.GetAxis("RJoystick Y") * _mouseSense * 2,
+                        Vector3.right
+                    );
 
-                // Paw
-                transform.rotation = Quaternion.Euler(
-                    transform.eulerAngles.x,
-                    transform.eulerAngles.y + Input.GetAxis("Mouse X") * _mouseSense,
-                    transform.eulerAngles.z
-                );
+                    transform.rotation = Quaternion.Euler(
+                        transform.eulerAngles.x,
+                        transform.eulerAngles.y + Input.GetAxis("RJoystick X") * _mouseSense * 2,
+                        transform.eulerAngles.z
+                    );
+                }
+                else
+                {
+                    // Pitch
+                    transform.rotation *= Quaternion.AngleAxis(
+                        -Input.GetAxis("Mouse Y") * _mouseSense,
+                        Vector3.right
+                    );
+
+                    // Paw
+                    transform.rotation = Quaternion.Euler(
+                        transform.eulerAngles.x,
+                        transform.eulerAngles.y + Input.GetAxis("Mouse X") * _mouseSense,
+                        transform.eulerAngles.z
+                    );
+                }
             }
             else
             if (!Application.isMobilePlatform && isInViewMode)
