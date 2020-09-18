@@ -94,7 +94,7 @@ public class FreeFlyCamera : MonoBehaviour
     }
 #endif
 
-    private bool controllerConnected = false;
+    public bool controllerConnected = false;
 
     private void Start()
     {
@@ -187,8 +187,8 @@ public class FreeFlyCamera : MonoBehaviour
 
             if (controllerConnected)
             {
-                transform.Translate(Vector3.forward * -Input.GetAxis("LJoystick Y") * 100f * Time.deltaTime);
-                transform.Translate(Vector3.right * Input.GetAxis("LJoystick X") * 100f * Time.deltaTime);
+                transform.Translate(Vector3.forward * -Input.GetAxis("LJoystick Y") * 200f * Time.deltaTime);
+                transform.Translate(Vector3.right * Input.GetAxis("LJoystick X") * 200f * Time.deltaTime);
             }
             else
             {

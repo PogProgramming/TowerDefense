@@ -13,4 +13,12 @@ public class ChangeUI : MonoBehaviour
         ChangeTo.SetActive(true);
         ChangeFrom.SetActive(false);
     }
+
+    void Update()
+    {
+        if (Input.GetButtonDown("BButton"))
+        {
+            ChangeScreen();
+        }    
+    }
 }
