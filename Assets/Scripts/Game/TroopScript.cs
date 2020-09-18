@@ -5,10 +5,11 @@ using UnityEngine;
 public class TroopScript : MonoBehaviour
 {
     public GameObject bullet;
+    public float BulletSpawnYOffset = 0;
+
     public LayerMask EnemyLayer;
 
     readonly float costMultiplier = 1.6f;
-
     private int level = 0;
     [SerializeField] private long cost = 250;
     [SerializeField] private float damage = 1f;

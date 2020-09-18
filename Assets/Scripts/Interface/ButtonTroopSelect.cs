@@ -14,10 +14,22 @@ public class ButtonTroopSelect : MonoBehaviour
 
     public void OnClick()
     { 
-        if(ps.statBlock.GetCash() >= ps.troopList[index].GetComponent<TroopScript>().GetCost())
+        if(ps.troopList[index].GetComponent<TroopScript>() != null)
         {
-            ps.selectedTroopIndex = index;
-            ps.ResetPlaced();
+            if (ps.statBlock.GetCash() >= ps.troopList[index].GetComponent<TroopScript>().GetCost())
+            {
+                ps.selectedTroopIndex = index;
+                ps.ResetPlaced();
+            }
         }
+        else
+        {
+            if (ps.statBlock.GetCash() >= ps.troopList[index].GetComponentInChildren<TroopScript>().GetCost())
+            {
+                ps.selectedTroopIndex = index;
+                ps.ResetPlaced();
+            }
+        }
+
     }
 }
