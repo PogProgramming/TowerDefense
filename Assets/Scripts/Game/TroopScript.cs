@@ -190,6 +190,8 @@ public class TroopScript : MonoBehaviour
         EnemyHealth enemyhp = enemy.GetComponentInChildren<EnemyHealth>();
         enemyhp.AdjustHealth(-damage);
 
+        Vector3 origin = transform.position;
+        if (BulletSpawnYOffset != 0) origin.y += BulletSpawnYOffset;
         GameObject _bullet = Instantiate(bullet);
         _bullet.GetComponent<BulletScript>().SetTargetPosition(transform.position, enemy.transform.position);
     }
