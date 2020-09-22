@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -13,7 +15,7 @@ public class PlacementScript : MonoBehaviour
 
     public GameObject highlighter;
     public GameObject viewDistanceHighlighter;
-    private BadSpotDistanceHighlighter viewDistanceHighlighterScript;
+    public BadSpotDistanceHighlighter viewDistanceHighlighterScript;
 
     public List<GameObject> troopList;
     public bool isPlacing = false;
@@ -48,7 +50,16 @@ public class PlacementScript : MonoBehaviour
         Plane plane = new Plane(Vector3.up, -1.1f);
 
         float dist;
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Ray ray;
+
+        if (Camera.main.GetComponent<FreeFlyCamera>().controllerConnected)
+        {
+            Vector2 midScreen = new Vector2(Screen.width / 2, Screen.height / 2);
+            ray = Camera.main.ScreenPointToRay(midScreen);
+        }
+        else
+            ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+
         if (plane.Raycast(ray, out dist))
         {
             point = ray.GetPoint(dist);
@@ -67,7 +78,7 @@ public class PlacementScript : MonoBehaviour
                 viewDistanceHighlighter.SetActive(false);
             }
 
-            if (Mouse.current.leftButton.wasPressedThisFrame)
+            if (Mouse.current.leftButton.wasPressedThisFrame || Input.GetButtonDown("AButton"))
             {
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 100, TroopLayerMask))
@@ -80,6 +91,7 @@ public class PlacementScript : MonoBehaviour
                     }
                 }
             }
+
 
             return;
         }
@@ -100,7 +112,7 @@ public class PlacementScript : MonoBehaviour
                 float distance = troopList[selectedTroopIndex].GetComponent<TroopScript>().GetViewRadius() * 2;
                 viewDistanceHighlighter.transform.localScale = new Vector3(distance, 0.001f, distance);
             }
-            if (Mouse.current.leftButton.wasPressedThisFrame && viewDistanceHighlighterScript.safe && statBlock.GetPlacedTroops() < statBlock.GetMaxTroops())
+            if (Mouse.current.leftButton.wasPressedThisFrame && viewDistanceHighlighterScript.safe && statBlock.GetPlacedTroops() < statBlock.GetMaxTroops() && !Camera.main.GetComponent<FreeFlyCamera>().controllerConnected)
             {
                 GameObject obj = Instantiate(troopList[selectedTroopIndex]);
                 TroopScript ts = obj.GetComponent<TroopScript>();

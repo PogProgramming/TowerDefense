@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ButtonTroopSelect : MonoBehaviour
 {
-    public Button controllerButton;
+    public Button PlacementButton;
 
     public int index = 1;
 
@@ -16,7 +17,7 @@ public class ButtonTroopSelect : MonoBehaviour
     }
 
     public void OnClick()
-    { 
+    {
         if(ps.troopList[index].GetComponent<TroopScript>() != null)
         {
             if (ps.statBlock.GetCash() >= ps.troopList[index].GetComponent<TroopScript>().GetCost())
@@ -34,7 +35,10 @@ public class ButtonTroopSelect : MonoBehaviour
             }
         }
 
-        if (Camera.main.GetComponent<FreeFlyCamera>().IsControllerConnected()) controllerButton.Select();
+        if (Camera.main.GetComponent<FreeFlyCamera>().IsControllerConnected())
+        {
+            EventSystem.current.GetComponent<EventSystem>().SetSelectedGameObject(PlacementButton.gameObject);
+        }
 
     }
 }

@@ -118,6 +118,8 @@ public class FreeFlyCamera : MonoBehaviour
                 }
             }
         }
+
+        if (controllerConnected) _mouseSense /= 3;
     }
 
     private void OnEnable()
@@ -188,8 +190,8 @@ public class FreeFlyCamera : MonoBehaviour
 
             if (controllerConnected)
             {
-                transform.Translate(Vector3.forward * -Input.GetAxis("LJoystick Y") * 200f * Time.deltaTime);
-                transform.Translate(Vector3.right * Input.GetAxis("LJoystick X") * 200f * Time.deltaTime);
+                transform.Translate(Vector3.forward * -Input.GetAxis("LJoystick Y") * 20f * Time.deltaTime);
+                transform.Translate(Vector3.right * Input.GetAxis("LJoystick X") * 20f * Time.deltaTime);
             }
             else
             {

@@ -35,6 +35,11 @@ public class UpgradeInterface : MonoBehaviour
             Vector3 position = new Vector3(troop.transform.position.x, 1f, troop.transform.position.z);
             viewDistanceHighlighter.transform.position = position;
             viewDistanceHighlighter.SetActive(true);
+
+            if (Input.GetButtonDown("XButton"))
+            {
+                LevelUp();
+            }
         }
     }
 
