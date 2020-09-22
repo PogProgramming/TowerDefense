@@ -106,7 +106,7 @@ public class TroopScript : MonoBehaviour
     {
         this.level++;
         cost = (long)(cost * costMultiplier);
-        damage = (long)(damage * costMultiplier);
+        damage = (long)Mathf.Ceil((float)damage * 1.4f);
         shootCooldown /= 1.1f;
 
         if (level % 10 == 0) viewRadius++;

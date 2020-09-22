@@ -8,6 +8,7 @@ public class EnemyHealth : MonoBehaviour
 
     public Stats statSystem;
     public float health = 100;
+    public GameObject destroyedEffect;
 
     void Start()
     {
@@ -16,7 +17,8 @@ public class EnemyHealth : MonoBehaviour
 
     void Update()
     {
-        if (health < 0) {
+        if (health < 0)
+        {
             Kill(true);
         }
     }
@@ -34,6 +36,15 @@ public class EnemyHealth : MonoBehaviour
 
         statSystem.activeEnemies--;
 
+        InstantiateDestroyEffect(destroyedEffect);
         Destroy(transform.gameObject);
+    }
+
+    private void InstantiateDestroyEffect(GameObject destroyEffect)
+    {
+        if (destroyEffect != null)
+        {
+            Instantiate(destroyEffect, transform.position, Quaternion.identity);
+        }
     }
 }

@@ -327,6 +327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameHealth: {fileID: 0}
   distanceMade: 0
+  movementSpeed: 2.5
 --- !u!114 &5334044956103155030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,6 +343,8 @@ MonoBehaviour:
   reward: 250
   statSystem: {fileID: 0}
   health: 1000
+  destroyedEffect: {fileID: 1000013462590818, guid: ecdd96beb7f93494880c052dfccf9dc1,
+    type: 3}
 --- !u!1 &9185277479122891787
 GameObject:
   m_ObjectHideFlags: 0

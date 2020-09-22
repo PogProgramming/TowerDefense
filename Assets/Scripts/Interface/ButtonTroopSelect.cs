@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonTroopSelect : MonoBehaviour
 {
+    public Button controllerButton;
+
     public int index = 1;
 
     PlacementScript ps;
@@ -30,6 +33,8 @@ public class ButtonTroopSelect : MonoBehaviour
                 ps.ResetPlaced();
             }
         }
+
+        if (Camera.main.GetComponent<FreeFlyCamera>().IsControllerConnected()) controllerButton.Select();
 
     }
 }

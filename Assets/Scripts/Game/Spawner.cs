@@ -184,6 +184,9 @@ public class Spawner : MonoBehaviour
         }
         timeBetweenSpawns = 3.0f / (float)wave;
         waveSet = true;
+
+        if(currentWave < 41)
+            amountOfTroops /= 2; // nerf
     }
 
     [SerializeField] int currentWave = 1;

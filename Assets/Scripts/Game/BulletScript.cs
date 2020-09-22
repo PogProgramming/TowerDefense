@@ -31,6 +31,7 @@ public class BulletScript : MonoBehaviour
             {
                 if(destroyEffect != null)
                 {
+                    Debug.Log("*EXPLOSION!*");
                     Instantiate(destroyEffect, transform.position, Quaternion.identity);
                 }
                 Destroy(transform.gameObject);
