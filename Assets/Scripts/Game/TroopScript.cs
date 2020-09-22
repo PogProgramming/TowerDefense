@@ -15,9 +15,12 @@ public class TroopScript : MonoBehaviour
     [SerializeField] private float damage = 1f;
     [SerializeField] private float shootCooldown = 1.2f;
 
+    public bool lookAtTarget = true;
     [SerializeField] private float viewRadius = 5f;
+    [SerializeField] private int viewUpgradeIncrement = 10;
     GameObject targetEnemy = null;
 
+    public float yPosSpawn = 1.5f;
     private bool displayTroop = false;
 
     public void SetIsDisplayTroop(bool _set) { displayTroop = _set; }
@@ -49,7 +52,9 @@ public class TroopScript : MonoBehaviour
 
         if (targetEnemy != null)
         {
-            transform.LookAt(targetEnemy.transform);
+            if (lookAtTarget == true)
+                transform.LookAt(targetEnemy.transform);
+
             if (cooldown > shootCooldown)
             {
                 Shoot(targetEnemy);
@@ -109,7 +114,7 @@ public class TroopScript : MonoBehaviour
         damage = (long)Mathf.Ceil((float)damage * 1.4f);
         shootCooldown /= 1.1f;
 
-        if (level % 10 == 0) viewRadius++;
+        if (level % viewUpgradeIncrement == 0) viewRadius++;
     }
 
     public void SetLevel(int level)
@@ -191,8 +196,10 @@ public class TroopScript : MonoBehaviour
         enemyhp.AdjustHealth(-damage);
 
         Vector3 origin = transform.position;
-        if (BulletSpawnYOffset != 0) origin.y += BulletSpawnYOffset;
+        origin.y += BulletSpawnYOffset;
+
         GameObject _bullet = Instantiate(bullet);
         _bullet.GetComponent<BulletScript>().SetTargetPosition(transform.position, enemy.transform.position);
+        _bullet.GetComponent<BulletScript>().SetYOffset(BulletSpawnYOffset);
     }
 }

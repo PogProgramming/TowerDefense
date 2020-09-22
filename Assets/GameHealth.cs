@@ -57,6 +57,7 @@ public class GameHealth : MonoBehaviour
         stats.activeEnemies = 0;
         stats.killedEnemies = 0;
         stats.SetWave(0);
+        stats.IncrementPlacedTroops(-stats.GetPlacedTroops());
 
         Spawner spawn = GetComponent<Spawner>();
         spawn.ManualAdjust(1);

@@ -24,7 +24,7 @@ public class PlacementScript : MonoBehaviour
 
     bool placed = true;
 
-    public Vector3 GetPoint() { return new Vector3(point.x, 1.5f, point.z); }
+    public Vector3 GetPoint() { return new Vector3(point.x, troopList[selectedTroopIndex].GetComponent<TroopScript>().yPosSpawn, point.z); }
     public void Placed()
     {
         placed = true;
@@ -100,12 +100,15 @@ public class PlacementScript : MonoBehaviour
                 float distance = troopList[selectedTroopIndex].GetComponent<TroopScript>().GetViewRadius() * 2;
                 viewDistanceHighlighter.transform.localScale = new Vector3(distance, 0.001f, distance);
             }
-            if (Mouse.current.leftButton.wasPressedThisFrame && viewDistanceHighlighterScript.safe)
+            if (Mouse.current.leftButton.wasPressedThisFrame && viewDistanceHighlighterScript.safe && statBlock.GetPlacedTroops() < statBlock.GetMaxTroops())
             {
                 GameObject obj = Instantiate(troopList[selectedTroopIndex]);
-                obj.transform.position = new Vector3(point.x, 1.5f, point.z);
+                TroopScript ts = obj.GetComponent<TroopScript>();
 
-                statBlock.AdjustCash(-obj.GetComponent<TroopScript>().GetCost());
+                statBlock.AdjustCash(-ts.GetCost());
+                statBlock.IncrementPlacedTroops(1);
+
+                obj.transform.position = new Vector3(point.x, ts.yPosSpawn, point.z);
 
                 Placed();
             }

@@ -21,8 +21,13 @@ public class ShowHighlightedTroop : MonoBehaviour
             displayTroop.GetComponent<TroopScript>().SetIsDisplayTroop(true);
             instantiated = true;
 
-            Material troopMaterial = displayTroop.GetComponent<MeshRenderer>().material;
-            displayTroop.GetComponent<MeshRenderer>().material = tranMat;
+            MeshRenderer troopMesh;
+            if (displayTroop.GetComponent<MeshRenderer>() == null)
+                troopMesh = displayTroop.GetComponentInChildren<MeshRenderer>();
+            else
+                troopMesh = displayTroop.GetComponent<MeshRenderer>();
+
+            troopMesh.material = tranMat;
         }
         else
         {
