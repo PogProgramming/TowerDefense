@@ -7,6 +7,8 @@ public class MobileButtons : MonoBehaviour
     public GameObject btn_Edit;
     public GameObject btn_View;
 
+    public GameObject editPanel;
+
     public List<GameObject> mobileButtons = new List<GameObject>();
 
     void Start()
@@ -15,9 +17,12 @@ public class MobileButtons : MonoBehaviour
         {
             mobileButtons.Add(btn);
         }
+
+        if (Application.isMobilePlatform) editPanel.SetActive(false);
     }
     public void RunEditMode()
     {
+        editPanel.SetActive(true);
         btn_Edit.SetActive(false);
         foreach (GameObject btn in mobileButtons)
         {
@@ -30,6 +35,7 @@ public class MobileButtons : MonoBehaviour
 
     public void RunViewMode()
     {
+        editPanel.SetActive(false);
         btn_Edit.SetActive(true);
         btn_View.SetActive(false);
         foreach (GameObject btn in mobileButtons)
