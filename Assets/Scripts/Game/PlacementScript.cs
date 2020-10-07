@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor.PackageManager.UI;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlacementScript : MonoBehaviour
 {
@@ -14,6 +9,7 @@ public class PlacementScript : MonoBehaviour
     public LayerMask TroopLayerMask;
 
     public GameObject highlighter;
+    public GameObject gridHighlighter;
     public GameObject viewDistanceHighlighter;
     public BadSpotDistanceHighlighter viewDistanceHighlighterScript;
 
@@ -31,7 +27,10 @@ public class PlacementScript : MonoBehaviour
     {
         placed = true;
         highlighter.SetActive(false);
+        gridHighlighter.SetActive(false);
+
         selectedTroopIndex = -1;
+
     }
     public void ResetPlaced() { placed = false; }
 
@@ -99,7 +98,7 @@ public class PlacementScript : MonoBehaviour
         if (point != Vector3.zero)
         {
             highlighter.transform.position = point;
-            viewDistanceHighlighter.transform.position = point;
+            viewDistanceHighlighter.transform.position = new Vector3(point.x, 1.1f, point.z);
         }
 
         if (!placed)
@@ -108,21 +107,29 @@ public class PlacementScript : MonoBehaviour
             {
                 highlighter.SetActive(true);
                 viewDistanceHighlighter.SetActive(true);
+                gridHighlighter.SetActive(true);
 
                 float distance = troopList[selectedTroopIndex].GetComponent<TroopScript>().GetViewRadius() * 2;
                 viewDistanceHighlighter.transform.localScale = new Vector3(distance, 0.001f, distance);
             }
-            if (Mouse.current.leftButton.wasPressedThisFrame && viewDistanceHighlighterScript.safe && statBlock.GetPlacedTroops() < statBlock.GetMaxTroops() && !Camera.main.GetComponent<FreeFlyCamera>().controllerConnected)
+            if (Mouse.current.leftButton.wasPressedThisFrame)
             {
-                GameObject obj = Instantiate(troopList[selectedTroopIndex]);
-                TroopScript ts = obj.GetComponent<TroopScript>();
+                if (viewDistanceHighlighterScript.safe && statBlock.GetPlacedTroops() < statBlock.GetMaxTroops() && !Camera.main.GetComponent<FreeFlyCamera>().controllerConnected)
+                {
+                    GameObject obj = Instantiate(troopList[selectedTroopIndex]);
+                    TroopScript ts = obj.GetComponent<TroopScript>();
 
-                statBlock.AdjustCash(-ts.GetCost());
-                statBlock.IncrementPlacedTroops(1);
+                    statBlock.AdjustCash(-ts.GetCost());
+                    statBlock.IncrementPlacedTroops(1);
 
-                obj.transform.position = new Vector3(point.x, ts.yPosSpawn, point.z);
+                    obj.transform.position = new Vector3(point.x, ts.yPosSpawn, point.z);
 
-                Placed();
+                    Placed();
+                }
+                else
+                {
+                    Placed();
+                }
             }
         }
     }

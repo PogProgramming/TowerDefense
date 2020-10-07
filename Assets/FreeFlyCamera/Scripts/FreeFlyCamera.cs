@@ -5,7 +5,6 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 
 [RequireComponent(typeof(Camera))]
 public class FreeFlyCamera : MonoBehaviour

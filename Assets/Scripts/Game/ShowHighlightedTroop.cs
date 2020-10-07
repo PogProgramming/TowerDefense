@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ShowHighlightedTroop : MonoBehaviour
 {
     PlacementScript ps;
+
     void Start()
     {
         ps = GameObject.Find("Player").GetComponent<PlacementScript>();

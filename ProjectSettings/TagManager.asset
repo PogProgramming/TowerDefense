@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - Troop
   - Path
+  - GridPlane
   layers:
   - Default
   - TransparentFX
